@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body {
+        body{
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -15,16 +15,22 @@
             background-position: center center; /* Center the background image */
             opacity: 0.9; /* Adjust opacity as needed */
         }
-        .container {
-            background-color: #FFF;
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            padding: 20px;
+        {
+            font-family: Arial, sans-serif;
+            background-color: #F5F5F5;
+            margin: 0;
+            padding: 0;
         }
         h1 {
             text-align: center;
             color: #8B0000;
             margin-bottom: 30px;
+        }
+        .container {
+            background-color: #FFF;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
         }
         table {
             width: 100%;
@@ -109,11 +115,11 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><b>black coffee</b></td>
+                    <td><b>Black Coffee</b></td>
                     <td><b>Rs30.00</b></td>
                 </tr>
                 <tr>
-                    <td><b>cappuccino</b></td>
+                    <td><b>Cappuccino</b></td>
                     <td><b>Rs40.00</b></td>
                 </tr>
             </tbody>
@@ -155,7 +161,7 @@
                 return;
             }
 
-            // Send order details to Arduino
+            // Send order details to Arduino via ESP8266
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
