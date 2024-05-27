@@ -140,17 +140,17 @@
         </form>
     </div>
 
-   <script>
+    <script>
         function orderNow() {
-            console.log("Order button clicked"); // Debugging statement
-            
+            console.log("Order button clicked");
+
             var name = document.getElementById("name").value;
             var coffee = document.getElementById("coffee").value;
             var quantity = document.getElementById("quantity").value;
 
-            console.log("Name: " + name); // Debugging statement
-            console.log("Coffee: " + coffee); // Debugging statement
-            console.log("Quantity: " + quantity); // Debugging statement
+            console.log("Name: " + name);
+            console.log("Coffee: " + coffee);
+            console.log("Quantity: " + quantity);
 
             // Validate input
             if (name === "") {
@@ -169,8 +169,9 @@
                     alert("Order received. Thank you!");
                 }
             };
-            // Update this line with the correct IP address of your ESP8266
-            xhttp.open("GET", "http://192.168.13.51/order?name=" + name + "&coffee=" + coffee + "&quantity=" + quantity, true);
+
+            // Update the URL to use HTTPS instead of HTTP
+            xhttp.open("GET", "https://192.168.13.51/order?name=" + name + "&coffee=" + coffee + "&quantity=" + quantity, true);
             xhttp.send();
         }
 
