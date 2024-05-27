@@ -5,21 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body{
+        body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-image: url('cfe.jpg'); /* Replace with your watermark image URL */
             background-repeat: no-repeat;
             background-attachment: fixed;
-            background-position: center center; /* Center the background image */
-            opacity: 0.9; /* Adjust opacity as needed */
-        }
-        {
-            font-family: Arial, sans-serif;
-            background-color: #F5F5F5;
-            margin: 0;
-            padding: 0;
+            background-position: center center;
+            background-size: cover;
+            opacity: 0.9;
         }
         h1 {
             text-align: center;
@@ -31,6 +26,7 @@
             box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             padding: 20px;
+            margin-top: 30px;
         }
         table {
             width: 100%;
@@ -88,9 +84,8 @@
             text-align: center;
             margin-top: 20px;
         }
-        /* Additional CSS3 styles */
         .jumbotron {
-            background-image: url('https://example.com/your-background-image.jpg');
+            background-image: url('https://example.com/your-background-image.jpg'); /* Replace with your background image URL */
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;
@@ -104,7 +99,7 @@
 <body>
     <div class="container">
         <div class="jumbotron">
-            <h1 class="text-center">Smart Coffee Vending Machine </h1>
+            <h1 class="text-center">Smart Coffee Vending Machine</h1>
         </div>
         <table class="table table-bordered">
             <thead class="thead-dark">
@@ -127,18 +122,18 @@
         <form id="orderForm">
             <div class="form-group">
                 <label for="name">Name:</label>
-                <input type="text" class="form-control" id="name" name="name">
+                <input type="text" class="form-control" id="name" name="name" required>
             </div>
             <div class="form-group">
                 <label for="coffee">Coffee:</label>
-                <select class="form-control" id="coffee" name="coffee">
-                    <option value="Black Coffee">Black Coffee</option>
-                    <option value="Cappuccino">Cappuccino</option>
+                <select class="form-control" id="coffee" name="coffee" required>
+                    <option value="black">Black Coffee</option>
+                    <option value="cappuccino">Cappuccino</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="quantity">Quantity:</label>
-                <input type="number" class="form-control" id="quantity" name="quantity" min="1" max="10">
+                <input type="number" class="form-control" id="quantity" name="quantity" min="1" max="10" required>
             </div>
             <button type="button" class="btn btn-danger" onclick="orderNow()" id="btn_submit">Order Now</button>
             <div><span id="time" class="display-1"></span> Seconds!</div>
@@ -168,7 +163,8 @@
                     alert("Order received. Thank you!");
                 }
             };
-            xhttp.open("GET", "http://192.168.13.51/order?name=" + name + "&coffee=" + coffee + "&quantity=" + quantity, true);
+            // Replace '192.168.13.51' with the actual IP address of your ESP8266
+            xhttp.open("GET", "http://192.168.13.51/order?name=" + name + "&type=" + coffee + "&quantity=" + quantity, true);
             xhttp.send();
         }
 
@@ -195,7 +191,6 @@
             startTimer(fiveMinutes, display);
         };
     </script>
-    <!-- Add Bootstrap and jQuery JavaScript libraries for Bootstrap functionality -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
