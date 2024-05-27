@@ -140,11 +140,17 @@
         </form>
     </div>
 
-    <script>
+   <script>
         function orderNow() {
+            console.log("Order button clicked"); // Debugging statement
+            
             var name = document.getElementById("name").value;
             var coffee = document.getElementById("coffee").value;
             var quantity = document.getElementById("quantity").value;
+
+            console.log("Name: " + name); // Debugging statement
+            console.log("Coffee: " + coffee); // Debugging statement
+            console.log("Quantity: " + quantity); // Debugging statement
 
             // Validate input
             if (name === "") {
@@ -163,8 +169,8 @@
                     alert("Order received. Thank you!");
                 }
             };
-            // Replace '192.168.13.51' with the actual IP address of your ESP8266
-            xhttp.open("GET", "http://192.168.13.51/order?name=" + name + "&type=" + coffee + "&quantity=" + quantity, true);
+            // Update this line with the correct IP address of your ESP8266
+            xhttp.open("GET", "http://192.168.13.51/order?name=" + name + "&coffee=" + coffee + "&quantity=" + quantity, true);
             xhttp.send();
         }
 
@@ -191,6 +197,7 @@
             startTimer(fiveMinutes, display);
         };
     </script>
+    <!-- Add Bootstrap and jQuery JavaScript libraries for Bootstrap functionality -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
