@@ -94,20 +94,6 @@
             border-radius: 10px;
             margin-bottom: 30px;
         }
-        .blinking {
-            font-size: 24px;
-            font-weight: bold;
-            color: darkgreen;
-            text-align: center;
-            margin-top: 20px;
-            display: none;
-            animation: blink 1s step-end infinite;
-        }
-        @keyframes blink {
-            50% {
-                opacity: 0;
-            }
-        }
     </style>
 </head>
 <body>
@@ -151,13 +137,12 @@
             </div>
             <button type="button" class="btn btn-danger" onclick="orderNow()" id="btn_submit">Order Now</button>
             <div><span id="time" class="display-1"></span> Seconds!</div>
-            <div id="blinkMessage" class="blinking">Thank you for ordering, <span id="userName"></span>! Your order is received.</div>
         </form>
     </div>
 
     <script>
-        var timerInterval;
-        var orderPlaced = false;
+        var timer;
+        var timerDuration = 60 * 5; // 5 minutes in seconds
 
         function orderNow() {
             console.log("Order button clicked");
@@ -180,14 +165,6 @@
                 return;
             }
 
-            // Display blinking message
-            document.getElementById("userName").textContent = name;
-            document.getElementById("blinkMessage").style.display = 'block';
-
-            // Stop the timer
-            clearInterval(timerInterval);
-            orderPlaced = true;
-
             // Send order details to Arduino via ESP8266
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
@@ -196,14 +173,37 @@
                 }
             };
 
-            // Update the URL to use HTTP instead of HTTPS due to mixed content issue
             xhttp.open("GET", "http://192.168.13.51/order?name=" + name + "&coffee=" + coffee + "&quantity=" + quantity, true);
             xhttp.send();
+
+            // Stop and reset the timer
+            clearInterval(timer);
+            startTimer(timerDuration, document.querySelector('#time'));
+
+            // Clear the form fields
+            document.getElementById("name").value = "";
+            document.getElementById("coffee").value = "black";
+            document.getElementById("quantity").value = 1;
+
+            // Display thank you message
+            var thankYouMessage = document.createElement("div");
+            thankYouMessage.style.color = "darkgreen";
+            thankYouMessage.style.fontSize = "24px";
+            thankYouMessage.style.fontWeight = "bold";
+            thankYouMessage.style.textAlign = "center";
+            thankYouMessage.style.marginTop = "20px";
+            thankYouMessage.innerHTML = "Thank you " + name + " for your order!";
+            document.querySelector(".container").appendChild(thankYouMessage);
+
+            setTimeout(function () {
+                thankYouMessage.remove();
+            }, 5000); // Remove the message after 5 seconds
         }
 
         function startTimer(duration, display) {
             var timer = duration, minutes, seconds;
-            timerInterval = setInterval(function () {
+            clearInterval(window.timerInterval); // Clear any existing timer
+            window.timerInterval = setInterval(function () {
                 minutes = parseInt(timer / 60, 10);
                 seconds = parseInt(timer % 60, 10);
 
@@ -213,24 +213,14 @@
                 display.textContent = seconds;
 
                 if (--timer < 0) {
-                    clearInterval(timerInterval);
-                    // Clear input fields only if order was placed
-                    if (orderPlaced) {
-                        document.getElementById("name").value = "";
-                        document.getElementById("coffee").value = "black";
-                        document.getElementById("quantity").value = 1;
-                        document.getElementById("blinkMessage").style.display = 'none';
-                        orderPlaced = false;
-                    }
+                    clearInterval(window.timerInterval);
                     startTimer(duration, display); // Restart the timer
                 }
             }, 1000);
         }
 
         window.onload = function () {
-            var fiveMinutes = 60 * 5,
-                display = document.querySelector('#time');
-            startTimer(fiveMinutes, display);
+            startTimer(timerDuration, document.querySelector('#time'));
         };
     </script>
     <!-- Add Bootstrap and jQuery JavaScript libraries for Bootstrap functionality -->
