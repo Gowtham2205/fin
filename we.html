@@ -156,6 +156,8 @@
     </div>
 
     <script>
+        var timerInterval;
+
         function orderNow() {
             console.log("Order button clicked");
 
@@ -181,6 +183,9 @@
             document.getElementById("userName").textContent = name;
             document.getElementById("blinkMessage").style.display = 'block';
 
+            // Stop the timer
+            clearInterval(timerInterval);
+
             // Send order details to Arduino via ESP8266
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
@@ -196,7 +201,7 @@
 
         function startTimer(duration, display) {
             var timer = duration, minutes, seconds;
-            setInterval(function () {
+            timerInterval = setInterval(function () {
                 minutes = parseInt(timer / 60, 10);
                 seconds = parseInt(timer % 60, 10);
 
@@ -206,7 +211,13 @@
                 display.textContent = seconds;
 
                 if (--timer < 0) {
-                    timer = duration;
+                    clearInterval(timerInterval);
+                    // Clear input fields
+                    document.getElementById("name").value = "";
+                    document.getElementById("coffee").value = "black";
+                    document.getElementById("quantity").value = 1;
+                    document.getElementById("blinkMessage").style.display = 'none';
+                    startTimer(duration, display); // Restart the timer
                 }
             }, 1000);
         }
