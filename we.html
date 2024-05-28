@@ -157,6 +157,7 @@
 
     <script>
         var timerInterval;
+        var orderPlaced = false;
 
         function orderNow() {
             console.log("Order button clicked");
@@ -185,6 +186,7 @@
 
             // Stop the timer
             clearInterval(timerInterval);
+            orderPlaced = true;
 
             // Send order details to Arduino via ESP8266
             var xhttp = new XMLHttpRequest();
@@ -212,11 +214,14 @@
 
                 if (--timer < 0) {
                     clearInterval(timerInterval);
-                    // Clear input fields
-                    document.getElementById("name").value = "";
-                    document.getElementById("coffee").value = "black";
-                    document.getElementById("quantity").value = 1;
-                    document.getElementById("blinkMessage").style.display = 'none';
+                    // Clear input fields only if order was placed
+                    if (orderPlaced) {
+                        document.getElementById("name").value = "";
+                        document.getElementById("coffee").value = "black";
+                        document.getElementById("quantity").value = 1;
+                        document.getElementById("blinkMessage").style.display = 'none';
+                        orderPlaced = false;
+                    }
                     startTimer(duration, display); // Restart the timer
                 }
             }, 1000);
