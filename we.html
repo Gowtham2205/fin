@@ -94,6 +94,20 @@
             border-radius: 10px;
             margin-bottom: 30px;
         }
+        .blinking {
+            font-size: 24px;
+            font-weight: bold;
+            color: darkgreen;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -137,6 +151,7 @@
             </div>
             <button type="button" class="btn btn-danger" onclick="orderNow()" id="btn_submit">Order Now</button>
             <div><span id="time" class="display-1"></span> Seconds!</div>
+            <div id="blinkMessage" class="blinking">Thank you for ordering, <span id="userName"></span>! Your order is received.</div>
         </form>
     </div>
 
@@ -162,6 +177,10 @@
                 return;
             }
 
+            // Display blinking message
+            document.getElementById("userName").textContent = name;
+            document.getElementById("blinkMessage").style.display = 'block';
+
             // Send order details to Arduino via ESP8266
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
@@ -170,8 +189,8 @@
                 }
             };
 
-            // Update the URL to use HTTPS instead of HTTP
-            xhttp.open("GET", "https://192.168.13.51/order?name=" + name + "&coffee=" + coffee + "&quantity=" + quantity, true);
+            // Update the URL to use HTTP instead of HTTPS due to mixed content issue
+            xhttp.open("GET", "http://192.168.13.51/order?name=" + name + "&coffee=" + coffee + "&quantity=" + quantity, true);
             xhttp.send();
         }
 
